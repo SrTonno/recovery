@@ -40,7 +40,6 @@ Get-History | Where-Object { $_.StartTime -ge $fechaInicio -and $_.StartTime -le
 
 #Dispositivos conectados // funciona
 Get-PnpDevice | Where-Object { $_.Status -eq 'OK' } | Select-Object Class, FriendlyName, InstanceId | Format-Table –AutoSize
-#Eventos de log
-Show-EventLog
-
+#Eventos de log //funciona
+Get-WinEvent -LogName "Application" | Where-Object { $_.TimeCreated -ge $fechaInicio -and $_.TimeCreated -le $fechaFin }
 
