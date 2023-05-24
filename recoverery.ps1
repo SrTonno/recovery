@@ -1,4 +1,8 @@
-# Definir las fechas de inicio y fin del rango
+param (
+	[Parameter(Position = 0, Mandatory = $false, ValueFromRemainingArguments = $true)]
+	[object[]] $NombreParametros
+)
+
 $fechaInicio = Get-Date "2023-01-01 00:00"
 $fechaFormateada_Inicio = Get-Date $fechaInicio -Format "yyyyMMdd"
 $fechaFin = Get-Date "2023-02-28 23:59"
@@ -7,7 +11,7 @@ $fechaFormateada_Fin = Get-Date $fechaFin -Format "yyyyMMdd"
 #-Obtención de la hora local de un equipo https://learn.microsoft.com/es-es/powershell/scripting/samples/collecting-information-about-computers?view=powershell-7.3
 Get-CimInstance -ClassName Win32_LocalTime
 #Fechas de cambio de ramas de registro (CurrentVersionRun) http://www.hispasec.com/resources/soft/RegistryDate.zip
-$rutaRegistro = "HKCU:\Software\Microsoft\Windows\CurrentVersion"
+$rutaRegistro = "HKCU:\Software\Microsoft\Windows\CurrentVersion\*"
 ## Obtener la propiedad de fecha de modificación de la clave del Registro
 $fechaModificacion = Get-ItemProperty -Path $rutaRegistro | Select-Object -ExpandProperty PSChildName
 ## Convertir la fecha de modificación a objeto DateTime
