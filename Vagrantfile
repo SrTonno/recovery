@@ -1,5 +1,5 @@
-VM_CPUS="2"
-VM_MEM="4096"
+VM_CPUS="6"
+VM_MEM="4396"
 
 
 Vagrant.configure("2") do |config|
