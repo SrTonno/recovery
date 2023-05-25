@@ -1,4 +1,4 @@
-VM_CPUS="6"
+VM_CPUS="4"
 VM_MEM="4396"
 
 
