@@ -31,10 +31,30 @@ $fechaFormateada_Inicio = Get-Date $fechaInicio -Format "yyyyMMdd"
 $fechaFormateada_Fin = Get-Date $fechaFin -Format "yyyyMMdd"
 
 def sleep():
+{
 	Write-Host "Presiona Enter para continuar..."
 	$null = Read-Host
+}
 
-#-Obtención de la hora local de un equipo https://learn.microsoft.com/es-es/powershell/scripting/samples/collecting-information-about-computers?view=powershell-7.3
+def history():
+{
+	# Importar el módulo PSBrowsingHistory
+	Import-Module -Name PSBrowsingHistory
+
+	# Obtener el historial de búsqueda de todos los navegadores
+	$history = Get-BrowsingHistory
+
+	# Recorrer el historial de búsqueda
+	foreach ($entry in $history) {
+		Write-Host "URL: $($entry.URL)"
+		Write-Host "Título: $($entry.Title)"
+		Write-Host "Fecha de visita: $($entry.LastVisited)"
+	}
+}
+
+
+
+	#-Obtención de la hora local de un equipo https://learn.microsoft.com/es-es/powershell/scripting/samples/collecting-information-about-computers?view=powershell-7.3
 Get-CimInstance -ClassName Win32_LocalTime
 sleep()
 #Fechas de cambio de ramas de registro (CurrentVersionRun) http://www.hispasec.com/resources/soft/RegistryDate.zip
