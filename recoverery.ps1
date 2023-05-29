@@ -30,33 +30,14 @@ else
 $fechaFormateada_Inicio = Get-Date $fechaInicio -Format "yyyyMMdd"
 $fechaFormateada_Fin = Get-Date $fechaFin -Format "yyyyMMdd"
 
-def sleep():
-{
+function Sleep() {
 	Write-Host "Presiona Enter para continuar..."
 	$null = Read-Host
 }
 
-def history():
-{
-	# Importar el módulo PSBrowsingHistory
-	Import-Module -Name PSBrowsingHistory
-
-	# Obtener el historial de búsqueda de todos los navegadores
-	$history = Get-BrowsingHistory
-
-	# Recorrer el historial de búsqueda
-	foreach ($entry in $history) {
-		Write-Host "URL: $($entry.URL)"
-		Write-Host "Título: $($entry.Title)"
-		Write-Host "Fecha de visita: $($entry.LastVisited)"
-	}
-}
-
-
-
-	#-Obtención de la hora local de un equipo https://learn.microsoft.com/es-es/powershell/scripting/samples/collecting-information-about-computers?view=powershell-7.3
+#-Obtención de la hora local de un equipo https://learn.microsoft.com/es-es/powershell/scripting/samples/collecting-information-about-computers?view=powershell-7.3
 Get-CimInstance -ClassName Win32_LocalTime
-sleep()
+sleep
 #Fechas de cambio de ramas de registro (CurrentVersionRun) http://www.hispasec.com/resources/soft/RegistryDate.zip
 $rutaRegistro = "HKCU:\Software\Microsoft\Windows\CurrentVersion\*"
 ## Obtener la propiedad de fecha de modificación de la clave del Registro
@@ -73,28 +54,28 @@ else
 {
 	Write-Host "La fecha de modificación está fuera del rango especificado."
 }
-sleep()
+Sleep
 #Archivos recientes //funciona
 $archivosRecientes = Get-ChildItem -File -Recurse -Path "C:\" | Where-Object { $_.LastWriteTime -ge $fechaInicio -and $_.LastWriteTime -le $fechaFin }
-sleep()
+Sleep
 ## Mostrar los archivos recientes dentro del rango
 foreach ($archivo in $archivosRecientes)
 {
 	Write-Host $archivo.FullName
 }
-sleep()
+Sleep
 #Programas instalados //Funciona
 (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*) + (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* ) | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Where-Object { $_.InstallDate -ge $fechaFormateada_Inicio -and $_.InstallDate -le $fechaFormateada_Fin } | Format-Table –AutoSize
-sleep()
+Sleep
 #Programas abiertos // funciona
 Get-Process
-sleep()
+Sleep
 #Historial de navegación
 Get-History | Where-Object { $_.StartTime -ge $fechaInicio -and $_.StartTime -le $fechaFin }
-sleep()
+Sleep
 #Dispositivos conectados // funciona
-Get-PnpDevice | Where-Object { $_.Status -eq 'OK' } | Select-Object Class, FriendlyName, InstanceId | Format-Table –AutoSize
-sleep()
+Get-PnpDevice | Where-Object { $_.Status -eq 'OK' } | Select-Object Class, FriendlyName, InstanceId | Format-Table -AutoSize
+Sleep
 #Eventos de log //funciona
 Get-WinEvent -LogName "Application" | Where-Object { $_.TimeCreated -ge $fechaInicio -and $_.TimeCreated -le $fechaFin }
 
