@@ -5,7 +5,6 @@ param
 	[Parameter(Position = 0, Mandatory = $false, ValueFromRemainingArguments = $true)]
 	[object[]] $argv
 )
-Write-Host $argv.Count
 $patron = "^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$"
 $patron2 = "^\d{2}-\d{2}-\d{4} \d{2}:\d{2}$"
 
