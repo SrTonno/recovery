@@ -66,9 +66,6 @@ Sleep
 #Programas instalados //Funciona
 (Get-ItemProperty HKLM:\Software\Wow6432Node\Microsoft\Windows\CurrentVersion\Uninstall\*) + (Get-ItemProperty HKLM:\Software\Microsoft\Windows\CurrentVersion\Uninstall\* ) | Select-Object DisplayName, DisplayVersion, Publisher, InstallDate | Where-Object { $_.InstallDate -ge $fechaFormateada_Inicio -and $_.InstallDate -le $fechaFormateada_Fin } | Format-Table –AutoSize
 Sleep
-#Programas abiertos // funciona
-Get-Process
-Sleep
 #Historial de navegación
 Get-History | Where-Object { $_.StartTime -ge $fechaInicio -and $_.StartTime -le $fechaFin }
 Sleep
@@ -77,4 +74,12 @@ Get-PnpDevice | Where-Object { $_.Status -eq 'OK' } | Select-Object Class, Frien
 Sleep
 #Eventos de log //funciona
 Get-WinEvent -LogName "Application" | Where-Object { $_.TimeCreated -ge $fechaInicio -and $_.TimeCreated -le $fechaFin }
+
+Sleep
+#Archivos temporales
+$TempPath = [System.IO.Path]::GetTempPath()
+Get-ChildItem -Path $TempPath  Where-Object { $_.LastWriteTime -ge $fechaInicio -and $_.LastWriteTime -le $fechaFin }
+Sleep
+#Programas abiertos // funciona
+Get-Process
 
