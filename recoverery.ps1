@@ -1,25 +1,20 @@
 param
 (
-	[Parameter(Position = 0, Mandatory = $false, ValueFromRemainingArguments = $true)]
+	[Parameter(Position = 0, Mandatory = $false)]
+	[DateTime]$fechaInicio,
+
+	[Parameter(Position = 1, Mandatory = $false)]
+	[DateTime]$fechaFin,
+
+	[Parameter(Position = 2, Mandatory = $false, ValueFromRemainingArguments = $true)]
 	[object[]] $argv
 )
-$patron = '^\d{4}.+?\d{2}.+?\d{2}.+?( \d{2}:\d{2})?$'
+#$patron = '^\d{4}.+?\d{2}.+?\d{2}.+?( \d{2}:\d{2})?$'
+$patron1 = '^\d{4}-\d{2}-\d{2}( \d{2}:\d{2})?$'
+$patron2 = '^\d{2}-\d{2}-\d{4}( \d{2}:\d{2})?$'
 $patron2 = '^\d{2}-\d{2}-\d{4}( \d{2}:\d{2})?$'
 
-if ($argv.Count -eq 2)
-{
-	if (($argv[0] -match $patron2) -and ($argv[1] -match $patron2))
-	{
-		$fechaInicio = Get-Date $argv[0] -Format "yyyy-MM-dd HH:mm"
-		$fechaFin = Get-Date $argv[1] -Format "yyyy-MM-dd HH:mm"
-	}
-	else
-	{
-		return
-	}
-}
-else
-{
+if (-not $fechaInicio -or -not $fechaFin) {
 	Write-Host "Hola"
 	$fechaInicio =  Get-Date -Format "yyyy-MM-dd HH:mm"
 	$fechaFin = (Get-Date).AddDays(-1).ToString("yyyy-MM-dd HH:mm")
